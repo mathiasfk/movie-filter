@@ -17,10 +17,14 @@ export interface Movie {
 export interface DiscoverMovieParams {
     include_adult?: boolean;
     include_video?: boolean;
+    language?: string;
     page?: number;
     primary_release_date_gte?: number;
+    primary_release_date_lte?: number;
     sort_by?: string;
-    without_genres: number;
-    vote_average_gte: number;
-    vote_counter_gte: number;
+    vote_average_gte?: number;
+    vote_count_gte?: number;
+    with_genres?: number;
+    without_genres?: number;
+    with_original_language?: string;
 }

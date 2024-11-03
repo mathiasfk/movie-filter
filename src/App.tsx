@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { Analytics } from '@vercel/analytics/react';
 import { discoverMovies } from './api/movies';
+import { DiscoverMovieParams, Movie } from './api/types';
 import MovieList from './components/MovieList';
-import { Movie } from './api/types';
+import Filter from './components/Filter';
 
 const App: React.FC = () => {
 
@@ -11,26 +12,26 @@ const App: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
-        const loadMovies = async () => {
-            try {
-                setLoading(true);
-                const moviesData = await discoverMovies({});
-                setMovies(moviesData);
-            } catch (error) {
-                setError("Não foi possível carregar a lista de filmes.");
-            } finally {
-                setLoading(false);
-            }
-        };
+    const loadMovies = async (filters: DiscoverMovieParams) => {
+        try {
+            setLoading(true);
+            const moviesData = await discoverMovies(filters); // Passa os filtros para a função
+            setMovies(moviesData);
+        } catch (error) {
+            setError("Não foi possível carregar a lista de filmes.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
-        loadMovies();
+    useEffect(() => {
+        loadMovies({}); // Carrega todos os filmes na montagem do componente
     }, []);
 
     return (
         <div style={{ padding: '20px' }}>
             <h1>Lista de Filmes</h1>
-
+            <Filter onFilterChange={loadMovies} />
             {loading && <p>Carregando filmes...</p>}
             {error && <p>{error}</p>}
 
