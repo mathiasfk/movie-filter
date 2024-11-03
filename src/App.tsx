@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
+import { Analytics } from '@vercel/analytics/react';
 import { discoverMovies, Movie } from './api/movies';
 
 const App: React.FC = () => {
@@ -35,6 +37,8 @@ const App: React.FC = () => {
                     <li key={movie.id}>{movie.title}</li>
                 ))}
             </ul>
+            <SpeedInsights />
+            <Analytics />
         </div>
     );
 };
