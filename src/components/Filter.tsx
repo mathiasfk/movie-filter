@@ -5,7 +5,7 @@ import './Filter.css';
 import { generateYears } from '../utils/dates';
 
 interface FilterProps {
-    onFilterChange: (filters: DiscoverMovieParams) => void; // Função para passar os filtros
+    onFilterChange: (filters: DiscoverMovieParams) => void;
 }
 
 const Filter: React.FC<FilterProps> = ({ onFilterChange }) => {
