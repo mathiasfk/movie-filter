@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { Analytics } from '@vercel/analytics/react';
-import { discoverMovies, Movie } from './api/movies';
+import { discoverMovies } from './api/movies';
+import MovieList from './components/MovieList';
+import { Movie } from './api/types';
 
 const App: React.FC = () => {
 
@@ -32,11 +34,7 @@ const App: React.FC = () => {
             {loading && <p>Carregando filmes...</p>}
             {error && <p>{error}</p>}
 
-            <ul>
-                {movies.map((movie) => (
-                    <li key={movie.id}>{movie.title}</li>
-                ))}
-            </ul>
+            <MovieList movies={movies} />
             <SpeedInsights />
             <Analytics />
         </div>
