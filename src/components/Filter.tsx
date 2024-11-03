@@ -44,16 +44,60 @@ const Filter: React.FC<FilterProps> = ({ onFilterChange }) => {
                 options={["", ...generateYears("desc")]}
             />
             <FilterField
-                label="Gênero a Incluir (ID)"
-                type="number"
+                label="Gênero a Incluir"
+                type="select"
                 value={includeGenre}
                 onChange={setIncludeGenre}
+                options={[
+                    { key: "", value: "" },
+                    { key: "28", value: "Ação" },
+                    { key: "12", value: "Aventura" },
+                    { key: "16", value: "Animação" },
+                    { key: "35", value: "Comédia" },
+                    { key: "80", value: "Crime" },
+                    { key: "99", value: "Documentário" },
+                    { key: "18", value: "Drama" },
+                    { key: "10751", value: "Família" },
+                    { key: "14", value: "Fantasia" },
+                    { key: "36", value: "História" },
+                    { key: "27", value: "Terror" },
+                    { key: "10402", value: "Música" },
+                    { key: "9648", value: "Mistério" },
+                    { key: "10749", value: "Romance" },
+                    { key: "878", value: "Ficção científica" },
+                    { key: "10770", value: "Cinema TV" },
+                    { key: "53", value: "Thriller" },
+                    { key: "10752", value: "Guerra" },
+                    { key: "37", value: "Faroeste" }
+                ]}
             />
             <FilterField
-                label="Gênero a Excluir (ID)"
-                type="number"
+                label="Gênero a Excluir"
+                type="select"
                 value={excludeGenre}
                 onChange={setExcludeGenre}
+                options={[
+                    { key: "", value: "" },
+                    { key: "28", value: "Ação" },
+                    { key: "12", value: "Aventura" },
+                    { key: "16", value: "Animação" },
+                    { key: "35", value: "Comédia" },
+                    { key: "80", value: "Crime" },
+                    { key: "99", value: "Documentário" },
+                    { key: "18", value: "Drama" },
+                    { key: "10751", value: "Família" },
+                    { key: "14", value: "Fantasia" },
+                    { key: "36", value: "História" },
+                    { key: "27", value: "Terror" },
+                    { key: "10402", value: "Música" },
+                    { key: "9648", value: "Mistério" },
+                    { key: "10749", value: "Romance" },
+                    { key: "878", value: "Ficção científica" },
+                    { key: "10770", value: "Cinema TV" },
+                    { key: "53", value: "Thriller" },
+                    { key: "10752", value: "Guerra" },
+                    { key: "37", value: "Faroeste" }
+                ]}
             />
             <FilterField
                 label="Nota Mínima"
