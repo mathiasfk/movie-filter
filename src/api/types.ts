@@ -19,12 +19,12 @@ export interface DiscoverMovieParams {
     include_video?: boolean;
     language?: string;
     page?: number;
-    primary_release_date_gte?: number;
-    primary_release_date_lte?: number;
+    primary_release_date_gte?: string;
+    primary_release_date_lte?: string;
     sort_by?: string;
-    vote_average_gte?: number;
-    vote_count_gte?: number;
-    with_genres?: number;
-    without_genres?: number;
+    vote_average_gte?: string;
+    vote_count_gte?: string;
+    with_genres?: string;
+    without_genres?: string;
     with_original_language?: string;
 }

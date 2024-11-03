@@ -1,0 +1,44 @@
+.filter-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px; /* Espaçamento entre os campos */
+    margin-bottom: 20px; /* Espaço abaixo do filtro */
+}
+
+.filter-label {
+    display: flex;
+    flex-direction: column; /* Exibir label e input em coluna */
+    flex: 1; /* Os campos ocuparão o mesmo espaço */
+    min-width: 150px; /* Largura mínima para cada campo */
+}
+
+.filter-input,
+.filter-select {
+    margin-top: 5px; /* Espaçamento acima do input */
+    padding: 8px; /* Espaçamento interno do input */
+    border: 1px solid #ccc; /* Borda do input */
+    border-radius: 4px; /* Bordas arredondadas */
+    font-size: 14px; /* Tamanho da fonte */
+}
+
+.filter-button {
+    padding: 10px 15px; /* Espaçamento interno do botão */
+    border: none; /* Sem borda */
+    border-radius: 4px; /* Bordas arredondadas */
+    background-color: #007bff; /* Cor de fundo */
+    color: white; /* Cor do texto */
+    font-size: 16px; /* Tamanho da fonte */
+    cursor: pointer; /* Cursor em forma de mão ao passar por cima */
+    transition: background-color 0.3s; /* Transição suave */
+}
+
+.filter-button:hover {
+    background-color: #0056b3; /* Cor ao passar o mouse */
+}
+
+/* Estilos responsivos */
+@media (max-width: 600px) {
+    .filter-container {
+        flex-direction: column; /* Exibir os campos em coluna em telas menores */
+    }
+}
