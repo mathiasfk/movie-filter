@@ -1,4 +1,4 @@
-export const genres: { [key: number]: string } = {
+export const genreDictionary: { [key: number]: string } = {
     28: "Ação",
     12: "Aventura",
     16: "Animação",
@@ -21,5 +21,5 @@ export const genres: { [key: number]: string } = {
 };
 
 export function getGenreLabel(genreId: number): string {
-    return genres[genreId] || "Gênero desconhecido";
+    return genreDictionary[genreId] || "Gênero desconhecido";
 }

@@ -3,11 +3,12 @@ import Select, { MultiValue } from 'react-select';
 
 interface MultiSelectProps {
     label: string;
+    value: { value: string; label: string }[]
     onChange: (value: string[]) => void;
     options: { value: string; label: string }[];
 }
 
-const MultiSelect: React.FC<MultiSelectProps> = ({ label, onChange, options }) => {
+const MultiSelect: React.FC<MultiSelectProps> = ({ label, value, onChange, options }) => {
     
     const handleChange = ((newValues: MultiValue<{
         value: string;
@@ -23,6 +24,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({ label, onChange, options }) =
             <Select
                 isMulti
                 options={options}
+                value={value}
                 onChange={handleChange}
                 className="filter-select"
             />

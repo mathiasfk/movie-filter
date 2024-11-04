@@ -1,87 +1,71 @@
-import React, { useState } from 'react';
+import React from 'react';
 import MultiSelect from './MultiSelect';
 import SingleSelect from './SingleSelect';
 import NumberInput from './NumberInput';
 import { DiscoverMovieParams } from '../api/types';
 import './Filter.css';
 import { generateYears } from '../utils/dates';
-import { genres } from '../utils/genre';
+import { genreDictionary, getGenreLabel } from '../utils/genre';
+import { sortByDictionary } from '../utils/sortBy';
 
 interface FilterProps {
+    filters: DiscoverMovieParams;
     onFilterChange: (filters: DiscoverMovieParams) => void;
 }
 
-const Filter: React.FC<FilterProps> = ({ onFilterChange }) => {
-    const [minYear, setMinYear] = useState<string | undefined>();
-    const [maxYear, setMaxYear] = useState<string | undefined>();
-    const [includeGenres, setIncludeGenres] = useState<string[]>([]);
-    const [excludeGenres, setExcludeGenres] = useState<string[]>([]);
-    const [minVoteAverage, setMinVoteAverage] = useState<string | undefined>();
-    const [sortBy, setSortBy] = useState<string | undefined>("popularity.desc");
+const Filter: React.FC<FilterProps> = ({ filters, onFilterChange }) => {
 
-    const handleFilterChange = () => {
+    const handleFilterChange = (key: keyof DiscoverMovieParams, value: any) => {
         onFilterChange({
-            primary_release_date_gte: minYear,
-            primary_release_date_lte: maxYear,
-            with_genres: includeGenres.join(','),
-            without_genres: excludeGenres.join(','),
-            vote_average_gte: minVoteAverage,
-            sort_by: sortBy,
+            ...filters,
+            [key]: value
         });
     };
 
-    const yearOptions: {value: string, label: string}[] = ["", ...generateYears("desc")].map((year: string) => ({value: year, label: year}));
-    const genreOptions: {value: string, label: string}[] = Object.entries(genres).map(([key, value]) => ({value: key, label: value}));
-    const popularityOptions: {value: string, label: string}[] = [
-        { value: "popularity.desc", label: "Popularidade (desc)" },
-        { value: "popularity.asc", label: "Popularidade (asc)" },
-        { value: "vote_average.desc", label: "Nota (desc)" },
-        { value: "vote_average.asc", label: "Nota (asc)" },
-        { value: "original_title.asc", label: "Título original (asc)" },
-        { value: "original_title.desc", label: "Título original (desc)" },
-        { value: "revenue.asc", label: "Receita (asc)" },
-        { value: "revenue.desc", label: "Receita (desc)" },
-        { value: "primary_release_date.asc", label: "Lançamento (asc)" },
-        { value: "primary_release_date.desc", label: "Lançamento (desc)" },
-        { value: "title.asc", label: "Título (asc)" },
-        { value: "title.desc", label: "Título (desc)" },
-        { value: "vote_count.asc", label: "Votos (asc)" },
-        { value: "vote_count.desc", label: "Votos (desc)" },
-    ]
+    const yearOptions = ["", ...generateYears("desc")].map(year => ({ value: year, label: year }));
+    const genreOptions = Object.entries(genreDictionary).map(([key, value]) => ({ value: key, label: value }));
+    const sortByOptions = Object.entries(sortByDictionary).map(([key, value]) => ({ value: key, label: value }));
+
+    const optionOrUndefined = (value: string|undefined, label: string|undefined = undefined) => value !== undefined ? {value: value, label: label ?? value} : undefined
 
     return (
         <div className="filter-container">
             <SingleSelect
                 label="Ano Mínimo"
-                onChange={setMinYear}
+                value={optionOrUndefined(filters.primary_release_date_gte)}
+                onChange={(value) => handleFilterChange('primary_release_date_gte', value)}
                 options={yearOptions}
             />
             <SingleSelect
                 label="Ano Máximo"
-                onChange={setMaxYear}
+                value={optionOrUndefined(filters.primary_release_date_lte)}
+                onChange={(value) => handleFilterChange('primary_release_date_lte', value)}
                 options={yearOptions}
             />
             <MultiSelect
                 label="Gêneros a Incluir"
-                onChange={setIncludeGenres}
+                value={filters.with_genres?.split(',').map(id => ({value: id, label: getGenreLabel(parseInt(id))})) || []}
+                onChange={(value) => handleFilterChange('with_genres', value.join(','))}
                 options={genreOptions}
             />
             <MultiSelect
                 label="Gêneros a Excluir"
-                onChange={setExcludeGenres}
+                value={filters.without_genres?.split(',').map(id => ({value: id, label: getGenreLabel(parseInt(id))})) || []}
+                onChange={(value) => handleFilterChange('without_genres', value.join(','))}
                 options={genreOptions}
             />
             <NumberInput
                 label="Nota Mínima"
-                value={minVoteAverage}
-                onChange={setMinVoteAverage}
+                value={filters.vote_average_gte || ''}
+                onChange={(value) => handleFilterChange('vote_average_gte', value)}
             />
             <SingleSelect
                 label="Ordenar por"
-                onChange={setSortBy}
-                options={popularityOptions}
+                value={optionOrUndefined(filters.sort_by)}
+                onChange={(value) => handleFilterChange('sort_by', value)}
+                options={sortByOptions}
             />
-            <button onClick={handleFilterChange} className="filter-button">
+            <button onClick={() => onFilterChange(filters)} className="filter-button">
                 Filtrar
             </button>
         </div>
