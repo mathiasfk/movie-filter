@@ -10,7 +10,7 @@ export const discoverMovies = async (filters: Partial<DiscoverMovieParams>): Pro
     if (filters.primary_release_date_lte) url.searchParams.append("primary_release_date.lte", filters.primary_release_date_lte.toString() + '-12-31');
     
     if (filters.with_genres && filters.with_genres !== "") url.searchParams.append("with_genres", filters.with_genres.toString());
-    if (filters.without_genres && filters.with_genres !== "") url.searchParams.append("without_genres", filters.without_genres.toString());
+    if (filters.without_genres && filters.without_genres !== "") url.searchParams.append("without_genres", filters.without_genres.toString());
 
     if (filters.vote_average_gte) url.searchParams.append("vote_average.gte", filters.vote_average_gte.toString());
 
