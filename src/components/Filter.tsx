@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import FilterField from './FilterField';
+import MultiSelect from './MultiSelect';
+import SingleSelect from './SingleSelect';
+import NumberInput from './NumberInput';
 import { DiscoverMovieParams } from '../api/types';
 import './Filter.css';
 import { generateYears } from '../utils/dates';
+import { genres } from '../utils/genre';
 
 interface FilterProps {
     onFilterChange: (filters: DiscoverMovieParams) => void;
@@ -11,8 +14,8 @@ interface FilterProps {
 const Filter: React.FC<FilterProps> = ({ onFilterChange }) => {
     const [minYear, setMinYear] = useState<string | undefined>();
     const [maxYear, setMaxYear] = useState<string | undefined>();
-    const [includeGenre, setIncludeGenre] = useState<string | undefined>();
-    const [excludeGenre, setExcludeGenre] = useState<string | undefined>();
+    const [includeGenres, setIncludeGenres] = useState<string[]>([]);
+    const [excludeGenres, setExcludeGenres] = useState<string[]>([]);
     const [minVoteAverage, setMinVoteAverage] = useState<string | undefined>();
     const [sortBy, setSortBy] = useState<string | undefined>("popularity.desc");
 
@@ -20,112 +23,63 @@ const Filter: React.FC<FilterProps> = ({ onFilterChange }) => {
         onFilterChange({
             primary_release_date_gte: minYear,
             primary_release_date_lte: maxYear,
-            with_genres: includeGenre,
-            without_genres: excludeGenre,
+            with_genres: includeGenres.join(','),
+            without_genres: excludeGenres.join(','),
             vote_average_gte: minVoteAverage,
             sort_by: sortBy,
         });
     };
 
+    const yearOptions: {value: string, label: string}[] = ["", ...generateYears("desc")].map((year: string) => ({value: year, label: year}));
+    const genreOptions: {value: string, label: string}[] = Object.entries(genres).map(([key, value]) => ({value: key, label: value}));
+    const popularityOptions: {value: string, label: string}[] = [
+        { value: "popularity.desc", label: "Popularidade (desc)" },
+        { value: "popularity.asc", label: "Popularidade (asc)" },
+        { value: "vote_average.desc", label: "Nota (desc)" },
+        { value: "vote_average.asc", label: "Nota (asc)" },
+        { value: "original_title.asc", label: "Título original (asc)" },
+        { value: "original_title.desc", label: "Título original (desc)" },
+        { value: "revenue.asc", label: "Receita (asc)" },
+        { value: "revenue.desc", label: "Receita (desc)" },
+        { value: "primary_release_date.asc", label: "Lançamento (asc)" },
+        { value: "primary_release_date.desc", label: "Lançamento (desc)" },
+        { value: "title.asc", label: "Título (asc)" },
+        { value: "title.desc", label: "Título (desc)" },
+        { value: "vote_count.asc", label: "Votos (asc)" },
+        { value: "vote_count.desc", label: "Votos (desc)" },
+    ]
+
     return (
         <div className="filter-container">
-            <FilterField
+            <SingleSelect
                 label="Ano Mínimo"
-                type="select"
-                value={minYear}
                 onChange={setMinYear}
-                options={["", ...generateYears("desc")]}
+                options={yearOptions}
             />
-            <FilterField
+            <SingleSelect
                 label="Ano Máximo"
-                type="select"
-                value={maxYear}
                 onChange={setMaxYear}
-                options={["", ...generateYears("desc")]}
+                options={yearOptions}
             />
-            <FilterField
-                label="Gênero a Incluir"
-                type="select"
-                value={includeGenre}
-                onChange={setIncludeGenre}
-                options={[
-                    { key: "", value: "" },
-                    { key: "28", value: "Ação" },
-                    { key: "12", value: "Aventura" },
-                    { key: "16", value: "Animação" },
-                    { key: "35", value: "Comédia" },
-                    { key: "80", value: "Crime" },
-                    { key: "99", value: "Documentário" },
-                    { key: "18", value: "Drama" },
-                    { key: "10751", value: "Família" },
-                    { key: "14", value: "Fantasia" },
-                    { key: "36", value: "História" },
-                    { key: "27", value: "Terror" },
-                    { key: "10402", value: "Música" },
-                    { key: "9648", value: "Mistério" },
-                    { key: "10749", value: "Romance" },
-                    { key: "878", value: "Ficção científica" },
-                    { key: "10770", value: "Cinema TV" },
-                    { key: "53", value: "Thriller" },
-                    { key: "10752", value: "Guerra" },
-                    { key: "37", value: "Faroeste" }
-                ]}
+            <MultiSelect
+                label="Gêneros a Incluir"
+                onChange={setIncludeGenres}
+                options={genreOptions}
             />
-            <FilterField
-                label="Gênero a Excluir"
-                type="select"
-                value={excludeGenre}
-                onChange={setExcludeGenre}
-                options={[
-                    { key: "", value: "" },
-                    { key: "28", value: "Ação" },
-                    { key: "12", value: "Aventura" },
-                    { key: "16", value: "Animação" },
-                    { key: "35", value: "Comédia" },
-                    { key: "80", value: "Crime" },
-                    { key: "99", value: "Documentário" },
-                    { key: "18", value: "Drama" },
-                    { key: "10751", value: "Família" },
-                    { key: "14", value: "Fantasia" },
-                    { key: "36", value: "História" },
-                    { key: "27", value: "Terror" },
-                    { key: "10402", value: "Música" },
-                    { key: "9648", value: "Mistério" },
-                    { key: "10749", value: "Romance" },
-                    { key: "878", value: "Ficção científica" },
-                    { key: "10770", value: "Cinema TV" },
-                    { key: "53", value: "Thriller" },
-                    { key: "10752", value: "Guerra" },
-                    { key: "37", value: "Faroeste" }
-                ]}
+            <MultiSelect
+                label="Gêneros a Excluir"
+                onChange={setExcludeGenres}
+                options={genreOptions}
             />
-            <FilterField
+            <NumberInput
                 label="Nota Mínima"
-                type="number"
                 value={minVoteAverage}
                 onChange={setMinVoteAverage}
             />
-            <FilterField
+            <SingleSelect
                 label="Ordenar por"
-                type="select"
-                value={sortBy}
                 onChange={setSortBy}
-                options={[
-                    { key: "popularity.desc", value: "Popularidade (desc)" },
-                    { key: "popularity.asc", value: "Popularidade (asc)" },
-                    { key: "vote_average.desc", value: "Nota (desc)" },
-                    { key: "vote_average.asc", value: "Nota (asc)" },
-                    { key: "original_title.asc", value: "Título original (asc)" },
-                    { key: "original_title.desc", value: "Título original (desc)" },
-                    { key: "revenue.asc", value: "Receita (asc)" },
-                    { key: "revenue.desc", value: "Receita (desc)" },
-                    { key: "primary_release_date.asc", value: "Lançamento (asc)" },
-                    { key: "primary_release_date.desc", value: "Lançamento (desc)" },
-                    { key: "title.asc", value: "Título (asc)" },
-                    { key: "title.desc", value: "Título (desc)" },
-                    { key: "vote_count.asc", value: "Votos (asc)" },
-                    { key: "vote_count.desc", value: "Votos (desc)" },
-                ]}
+                options={popularityOptions}
             />
             <button onClick={handleFilterChange} className="filter-button">
                 Filtrar
