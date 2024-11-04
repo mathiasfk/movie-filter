@@ -19,3 +19,10 @@ export function getSortByLabel(sortBy: string): string {
     sortByDictionary[sortBy] ?? console.warn(`Unknown sort criteria: ${sortBy}`);
     return sortByDictionary[sortBy] || "Opção desconhecida";
 }
+
+export function getSortBySelectedOption(selectedValue: string|undefined){
+    if(selectedValue === undefined || selectedValue === ""){
+        return undefined;
+    }
+    return ({value: selectedValue, label: getSortByLabel(selectedValue)});
+}

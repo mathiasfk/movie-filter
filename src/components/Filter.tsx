@@ -6,7 +6,7 @@ import { DiscoverMovieParams } from '../api/types';
 import './Filter.css';
 import { generateYears } from '../utils/dates';
 import { genreDictionary, getGenreSelectedOptions } from '../utils/genre';
-import { sortByDictionary } from '../utils/sortBy';
+import { getSortBySelectedOption, sortByDictionary } from '../utils/sortBy';
 
 interface FilterProps {
     filters: DiscoverMovieParams;
@@ -61,7 +61,7 @@ const Filter: React.FC<FilterProps> = ({ filters, onFilterChange }) => {
             />
             <SingleSelect
                 label="Ordenar por"
-                value={optionOrUndefined(filters.sort_by)}
+                value={getSortBySelectedOption(filters.sort_by)}
                 onChange={(value) => handleFilterChange('sort_by', value)}
                 options={sortByOptions}
             />
