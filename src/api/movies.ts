@@ -19,9 +19,10 @@ export const discoverMovies = async (filters: Partial<DiscoverMovieParams>): Pro
     if(filters.page) url.searchParams.append("page", filters.page.toString());
 
     // Fixed filters
-    url.searchParams.append("vote_count.gte", '50');
-    url.searchParams.append("include_adult", 'false');
-    url.searchParams.append("include_video", 'false');
+    url.searchParams.append("vote_count.gte", "50");
+    url.searchParams.append("include_adult", "false");
+    url.searchParams.append("include_video", "false");
+    url.searchParams.append("language", "pt-BR")
 
     try {
         const response = await fetch(url.toString(), {
