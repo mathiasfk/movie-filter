@@ -5,7 +5,7 @@ import NumberInput from './NumberInput';
 import { DiscoverMovieParams } from '../api/types';
 import './Filter.css';
 import { generateYears } from '../utils/dates';
-import { genreDictionary, getGenreLabel } from '../utils/genre';
+import { genreDictionary, getGenreSelectedOptions } from '../utils/genre';
 import { sortByDictionary } from '../utils/sortBy';
 
 interface FilterProps {
@@ -44,13 +44,13 @@ const Filter: React.FC<FilterProps> = ({ filters, onFilterChange }) => {
             />
             <MultiSelect
                 label="Gêneros a Incluir"
-                value={filters.with_genres?.split(',').map(id => ({value: id, label: getGenreLabel(parseInt(id))})) || []}
+                value={getGenreSelectedOptions(filters.with_genres)}
                 onChange={(value) => handleFilterChange('with_genres', value.join(','))}
                 options={genreOptions}
             />
             <MultiSelect
                 label="Gêneros a Excluir"
-                value={filters.without_genres?.split(',').map(id => ({value: id, label: getGenreLabel(parseInt(id))})) || []}
+                value={getGenreSelectedOptions(filters.without_genres)}
                 onChange={(value) => handleFilterChange('without_genres', value.join(','))}
                 options={genreOptions}
             />

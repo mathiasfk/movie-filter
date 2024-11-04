@@ -21,5 +21,13 @@ export const genreDictionary: { [key: number]: string } = {
 };
 
 export function getGenreLabel(genreId: number): string {
+    genreDictionary[genreId] ?? console.warn(`Unknown genre: ${genreId}`);
     return genreDictionary[genreId] || "Gênero desconhecido";
+}
+
+export function getGenreSelectedOptions(selectedList: string|undefined){
+    if(selectedList === undefined || selectedList === ""){
+        return [];
+    }
+    return selectedList.split(',').map(id => ({value: id, label: getGenreLabel(parseInt(id))}));
 }

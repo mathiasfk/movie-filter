@@ -16,5 +16,6 @@ export const sortByDictionary: { [key: string]: string } = {
 };
 
 export function getSortByLabel(sortBy: string): string {
+    sortByDictionary[sortBy] ?? console.warn(`Unknown sort criteria: ${sortBy}`);
     return sortByDictionary[sortBy] || "Opção desconhecida";
 }
