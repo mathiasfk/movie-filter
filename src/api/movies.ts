@@ -16,6 +16,8 @@ export const discoverMovies = async (filters: Partial<DiscoverMovieParams>): Pro
 
     if (filters.sort_by) url.searchParams.append("sort_by", filters.sort_by.toString());
 
+    if(filters.page) url.searchParams.append("page", filters.page.toString());
+
     // Fixed filters
     url.searchParams.append("vote_count.gte", '50');
     url.searchParams.append("include_adult", 'false');
