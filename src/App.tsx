@@ -8,6 +8,7 @@ import Filter from './components/Filter';
 
 const App: React.FC = () => {
     const [movies, setMovies] = useState<Movie[]>([]);
+    const [hasMore, setHasMore] = useState(true);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const [page, setPage] = useState<number>(1);
@@ -18,6 +19,7 @@ const App: React.FC = () => {
         try {
             setLoading(true);
             const moviesData = await discoverMovies({ ...currentFilters, page: currentPage });
+            setHasMore(moviesData.length > 0);
             setMovies(prevMovies => (currentPage === 1 ? moviesData : [...prevMovies, ...moviesData]));
         } catch (error) {
             setError("Não foi possível carregar a lista de filmes.");
@@ -31,7 +33,8 @@ const App: React.FC = () => {
             2 * window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight + 300 &&
             !loading
         ) {
-            setPage(prevPage => prevPage + 1);
+            if(hasMore)
+                setPage(prevPage => prevPage + 1);
         }
     };
 
