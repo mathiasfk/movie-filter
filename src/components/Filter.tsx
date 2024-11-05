@@ -65,9 +65,6 @@ const Filter: React.FC<FilterProps> = ({ filters, onFilterChange }) => {
                 onChange={(value) => handleFilterChange('sort_by', value)}
                 options={sortByOptions}
             />
-            <button onClick={() => onFilterChange(filters)} className="filter-button">
-                Filtrar
-            </button>
         </div>
     );
 };
