@@ -12,11 +12,16 @@
     min-width: 150px; /* Largura mínima para cada campo */
 }
 
-.filter-input,
-.filter-select {
+.filter-input {
     margin-top: 5px; /* Espaçamento acima do input */
     padding: 8px; /* Espaçamento interno do input */
     border: 1px solid #ccc; /* Borda do input */
+    border-radius: 4px; /* Bordas arredondadas */
+    font-size: 14px; /* Tamanho da fonte */
+}
+.filter-select {
+    margin-top: 5px; /* Espaçamento acima do input */
+    padding: 8px; /* Espaçamento interno do input */
     border-radius: 4px; /* Bordas arredondadas */
     font-size: 14px; /* Tamanho da fonte */
 }
