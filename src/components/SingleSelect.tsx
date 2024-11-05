@@ -22,6 +22,7 @@ const SingleSelect: React.FC<SelectProps> = ({ label, value, onChange, options }
                 value={value}
                 onChange={handleChange}
                 className="filter-select"
+                isClearable
             />
         </label>
     );
