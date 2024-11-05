@@ -28,3 +28,19 @@ export interface DiscoverMovieParams {
     without_genres?: string;
     with_original_language?: string;
 }
+
+export interface MovieDetails {
+    id: number;
+    title: string;
+    adult: boolean;
+    genres: any[];
+    original_language: string;
+    original_title: string;
+    overview: string;
+    popularity: number;
+    poster_path: string;
+    release_date: string;
+    video: boolean;
+    vote_average: number;
+    vote_count: number;
+}

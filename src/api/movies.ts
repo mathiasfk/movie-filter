@@ -1,10 +1,12 @@
-import { Movie, DiscoverMovieParams } from "./types";
+import { Movie, DiscoverMovieParams, MovieDetails } from "./types";
 
-const API_BASE_URL = "https://api.themoviedb.org/3/discover/movie";
+const API_BASE_URL = "https://api.themoviedb.org/3";
+const API_DISCOVER = `${API_BASE_URL}/discover/movie`;
+const API_MOVIE_DETAILS = `${API_BASE_URL}/movie`;
 const API_TOKEN = process.env.REACT_APP_API_TOKEN;
 
 export const discoverMovies = async (filters: Partial<DiscoverMovieParams>): Promise<Movie[]> => {
-    const url = new URL(API_BASE_URL);
+    const url = new URL(API_DISCOVER);
 
     if (filters.primary_release_date_gte) url.searchParams.append("primary_release_date.gte", filters.primary_release_date_gte.toString() + '-01-01');
     if (filters.primary_release_date_lte) url.searchParams.append("primary_release_date.lte", filters.primary_release_date_lte.toString() + '-12-31');
@@ -42,5 +44,29 @@ export const discoverMovies = async (filters: Partial<DiscoverMovieParams>): Pro
     } catch (error) {
         console.error("Erro ao carregar a lista de filmes: ", error);
         return [];
+    }
+};
+
+export const movieDetails = async (id: number): Promise<MovieDetails|null> => {
+    const url = new URL(`${API_MOVIE_DETAILS}/${id}`);
+
+    try {
+        const response = await fetch(url.toString(), {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${API_TOKEN}`,
+                "Content-Type": "application/json",
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Erro ${response.status}: Não foi possível carregar a lista de filmes.`);
+        }
+
+        const data = await response.json();
+        return data as MovieDetails;
+    } catch (error) {
+        console.error("Erro ao carregar a lista de filmes: ", error);
+        return null;
     }
 };
