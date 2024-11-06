@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { movieDetails } from '../api/movies';
 import { MovieDetails } from '../api/types';
 
-const MovieDetailsPage: React.FC = () => {
-    const { id } = useParams<{ id: string }>();
+interface MovieDetailsPageProps {
+    id: string;
+}
+
+const MovieDetailsPage: React.FC<MovieDetailsPageProps> = ({id}) => {
     const [movie, setMovie] = useState<MovieDetails | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+
 
     useEffect(() => {
         const fetchMovieDetails = async () => {

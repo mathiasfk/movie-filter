@@ -3,7 +3,8 @@ import { discoverMovies } from '../api/movies';
 import { DiscoverMovieParams, Movie } from '../api/types';
 import MovieList from '../components/MovieList';
 import Filter from '../components/Filter';
-
+import MovieDetailsPage from './MovieDetailsPage';
+import { useNavigate } from 'react-router-dom';
 
 const MovieListPage: React.FC = () => {
     const [movies, setMovies] = useState<Movie[]>([]);
@@ -12,6 +13,8 @@ const MovieListPage: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [page, setPage] = useState<number>(1);
     const [filters, setFilters] = useState<DiscoverMovieParams | null>(null);
+    const [showDetail, setShowDetail] = useState<boolean>(false);
+    const [movieId, setMovieId] = useState<number>(0);
 
     const loadMovies = async (currentFilters: DiscoverMovieParams, currentPage: number = 1) => {
         if (loading) return;
@@ -83,14 +86,38 @@ const MovieListPage: React.FC = () => {
         setPage(1);
     }, []);
 
+    const onClickMovie = (id: number) => {
+        setShowDetail(true);
+        setMovieId(id);
+        window.history.pushState(null, '', `/movie/${id}`);
+    }
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const handlePopState = (event: PopStateEvent) => {
+            setShowDetail(false);
+        };
+
+        window.addEventListener('popstate', handlePopState);
+
+        return () => {
+            window.removeEventListener('popstate', handlePopState);
+        };
+    }, [navigate]);
+
     return (
         <div style={{ padding: '20px' }}>
-            <h1>Lista de Filmes</h1>
-            {filters && <Filter filters={filters} onFilterChange={handleFilterChange} />}
-            {loading && <p>Carregando filmes...</p>}
-            {error && <p>{error}</p>}
+            {!showDetail && <h1>Lista de Filmes</h1>}
+            {!showDetail && filters && <Filter filters={filters} onFilterChange={handleFilterChange} />}
+            {(!showDetail && loading) && <p>Carregando filmes...</p>}
+            {(!showDetail && error) && <p>{error}</p>}
 
-            <MovieList movies={movies} />
+            {!showDetail ? (
+                <MovieList movies={movies} onClickMovie={onClickMovie} />
+            ) : (
+                <MovieDetailsPage id={movieId.toString()} />
+            )}
         </div>
     );
 };
