@@ -49,6 +49,7 @@ export const discoverMovies = async (filters: Partial<DiscoverMovieParams>): Pro
 
 export const movieDetails = async (id: number): Promise<MovieDetails|null> => {
     const url = new URL(`${API_MOVIE_DETAILS}/${id}`);
+    url.searchParams.append("language", "pt-BR")
 
     try {
         const response = await fetch(url.toString(), {
