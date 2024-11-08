@@ -4,3 +4,7 @@ export function generateYears(order: "asc" | "desc" = "desc"): string[] {
         .sort((a, b) => order === "asc" ? a - b : b - a)
         .map(y => y.toString())
 }
+
+export function localizeDate(isoDate: string){
+    return new Date(isoDate).toLocaleDateString();
+}

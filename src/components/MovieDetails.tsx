@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { IMovieDetails } from '../api/types';
+import { localizeDate } from '../utils/dates';
 
 interface MovieDetailsProps {
     movie: IMovieDetails;
@@ -14,8 +15,9 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({ movie }) => {
     <div style={{ padding: '20px' }}>
         <h1>{movie.title}</h1>
         {showOriginalTitle && <h2>{movie.original_title}</h2>}
-        <p><strong>Lançamento:</strong> {movie.release_date}</p>
+        <p><strong>Lançamento:</strong> {localizeDate(movie.release_date)}</p>
         <p><strong>Gênero:</strong> {movie.genres.map(g => g.name).join(', ')}</p>
+        <p><strong>Duração:</strong> {movie.runtime} min</p>
         <p><strong>Nota:</strong> {movie.vote_average.toFixed(1)}</p>
         <p><strong>Votos:</strong> {movie.vote_count}</p>
         <p>{movie.overview}</p>
