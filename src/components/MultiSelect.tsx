@@ -1,5 +1,6 @@
 import React from 'react';
 import Select, { MultiValue } from 'react-select';
+import { isMobile } from '../utils/user';
 
 interface MultiSelectProps {
     label: string;
@@ -27,6 +28,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({ label, value, onChange, optio
                 value={value}
                 onChange={handleChange}
                 className="filter-select"
+                isSearchable={!isMobile()}
             />
         </label>
     );

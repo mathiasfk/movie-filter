@@ -1,5 +1,6 @@
 import React from 'react';
 import Select, { SingleValue } from 'react-select';
+import { isMobile } from '../utils/user';
 
 interface SelectProps {
     label: string;
@@ -23,6 +24,7 @@ const SingleSelect: React.FC<SelectProps> = ({ label, value, onChange, options }
                 onChange={handleChange}
                 className="filter-select"
                 isClearable
+                isSearchable={!isMobile()}
             />
         </label>
     );
