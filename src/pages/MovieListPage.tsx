@@ -1,29 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import { discoverMovies } from '../api/movies';
-import { DiscoverMovieParams, Movie } from '../api/types';
+import { discoverMovies, movieDetails } from '../api/movies';
+import { DiscoverMovieParams, IMovie, IMovieDetails } from '../api/types';
 import MovieList from '../components/MovieList';
 import Filter from '../components/Filter';
-import MovieDetailsPage from './MovieDetailsPage';
+import MovieDetails from '../components/MovieDetails';
 import { useNavigate } from 'react-router-dom';
 
 const MovieListPage: React.FC = () => {
-    const [movies, setMovies] = useState<Movie[]>([]);
+    const [movies, setMovies] = useState<IMovie[]>([]);
+    const [selectedMovie, setSelectedMovie] = useState<IMovieDetails | null>(null);
     const [hasMore, setHasMore] = useState(true);
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const [page, setPage] = useState<number>(1);
-    const [filters, setFilters] = useState<DiscoverMovieParams | null>(null);
-    const [showDetail, setShowDetail] = useState<boolean>(false);
-    const [movieId, setMovieId] = useState<number>(0);
+    const [page, setPage] = useState(1);
+    const [filters, setFilters] = useState<DiscoverMovieParams | null>(null);  // Inicialmente null
+    const [showDetail, setShowDetail] = useState(false);
 
     const loadMovies = async (currentFilters: DiscoverMovieParams, currentPage: number = 1) => {
         if (loading) return;
+        setLoading(true);
         try {
-            setLoading(true);
             const moviesData = await discoverMovies({ ...currentFilters, page: currentPage });
             setHasMore(moviesData.length > 0);
-            setMovies(prevMovies => (currentPage === 1 ? moviesData : [...prevMovies, ...moviesData]));
-        } catch (error) {
+            setMovies(prev => currentPage === 1 ? moviesData : [...prev, ...moviesData]);
+        } catch (err) {
             setError("Não foi possível carregar a lista de filmes.");
         } finally {
             setLoading(false);
@@ -31,25 +31,19 @@ const MovieListPage: React.FC = () => {
     };
 
     const handleScroll = () => {
-        if (
-            2 * window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight + 300 &&
-            !loading
-        ) {
-            if(hasMore)
-                setPage(prevPage => prevPage + 1);
+        if (2 * window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight + 300 && hasMore && !loading) {
+            setPage(prev => prev + 1);
         }
     };
 
     useEffect(() => {
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
-    }, [loading]);
+    }, [loading, hasMore]);
 
     useEffect(() => {
-        if (filters) {
-            loadMovies(filters, page);
-        }
-    }, [page, filters]);
+        if (filters) loadMovies(filters, page);
+    }, [filters, page]);
 
     const updateURLWithFilters = (currentFilters: DiscoverMovieParams) => {
         const url = new URL(window.location.href);
@@ -86,16 +80,26 @@ const MovieListPage: React.FC = () => {
         setPage(1);
     }, []);
 
-    const onClickMovie = (id: number) => {
-        setShowDetail(true);
-        setMovieId(id);
-        window.history.pushState(null, '', `/movie/${id}`);
-    }
+    const handleMovieSelect = async (movieId: number) => {
+        setLoading(true);
+        try {
+            const movieData = await movieDetails(movieId);
+            setSelectedMovie(movieData);
+            setShowDetail(true);
+            window.history.pushState(null, '', `/movie/${movieId}`);
+
+            window.scrollTo(0, 0);
+        } catch {
+            setError("Não foi possível carregar os detalhes do filme.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        const handlePopState = (event: PopStateEvent) => {
+        const handlePopState = () => {
             setShowDetail(false);
         };
 
@@ -109,14 +113,14 @@ const MovieListPage: React.FC = () => {
     return (
         <div style={{ padding: '20px' }}>
             {!showDetail && <h1>Lista de Filmes</h1>}
-            {!showDetail && filters && <Filter filters={filters} onFilterChange={handleFilterChange} />}
-            {(!showDetail && loading) && <p>Carregando filmes...</p>}
-            {(!showDetail && error) && <p>{error}</p>}
+            {!showDetail && <Filter filters={filters || {}} onFilterChange={handleFilterChange} />}
+            {loading && <p>Carregando...</p>}
+            {error && <p>{error}</p>}
 
             {!showDetail ? (
-                <MovieList movies={movies} onClickMovie={onClickMovie} />
+                <MovieList movies={movies} onClickMovie={handleMovieSelect} />
             ) : (
-                <MovieDetailsPage id={movieId.toString()} />
+                selectedMovie && <MovieDetails movie={selectedMovie} />
             )}
         </div>
     );

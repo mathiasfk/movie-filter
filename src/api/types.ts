@@ -1,4 +1,4 @@
-export interface Movie {
+export interface IMovie {
     id: number;
     title: string;
     adult: boolean;
@@ -29,7 +29,7 @@ export interface DiscoverMovieParams {
     with_original_language?: string;
 }
 
-export interface MovieDetails {
+export interface IMovieDetails {
     id: number;
     title: string;
     adult: boolean;

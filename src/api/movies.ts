@@ -1,11 +1,11 @@
-import { Movie, DiscoverMovieParams, MovieDetails } from "./types";
+import { IMovie, DiscoverMovieParams, IMovieDetails } from "./types";
 
 const API_BASE_URL = "https://api.themoviedb.org/3";
 const API_DISCOVER = `${API_BASE_URL}/discover/movie`;
 const API_MOVIE_DETAILS = `${API_BASE_URL}/movie`;
 const API_TOKEN = process.env.REACT_APP_API_TOKEN;
 
-export const discoverMovies = async (filters: Partial<DiscoverMovieParams>): Promise<Movie[]> => {
+export const discoverMovies = async (filters: Partial<DiscoverMovieParams>): Promise<IMovie[]> => {
     const url = new URL(API_DISCOVER);
 
     if (filters.primary_release_date_gte) url.searchParams.append("primary_release_date.gte", filters.primary_release_date_gte.toString() + '-01-01');
@@ -40,14 +40,14 @@ export const discoverMovies = async (filters: Partial<DiscoverMovieParams>): Pro
         }
 
         const data = await response.json();
-        return data.results as Movie[];
+        return data.results as IMovie[];
     } catch (error) {
         console.error("Erro ao carregar a lista de filmes: ", error);
         return [];
     }
 };
 
-export const movieDetails = async (id: number): Promise<MovieDetails|null> => {
+export const movieDetails = async (id: number): Promise<IMovieDetails|null> => {
     const url = new URL(`${API_MOVIE_DETAILS}/${id}`);
     url.searchParams.append("language", "pt-BR")
 
@@ -65,7 +65,7 @@ export const movieDetails = async (id: number): Promise<MovieDetails|null> => {
         }
 
         const data = await response.json();
-        return data as MovieDetails;
+        return data as IMovieDetails;
     } catch (error) {
         console.error("Erro ao carregar a lista de filmes: ", error);
         return null;

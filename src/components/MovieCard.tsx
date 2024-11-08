@@ -1,10 +1,10 @@
 import React from 'react';
-import { Movie } from '../api/types';
+import { IMovie } from '../api/types';
 import './MovieCard.css';
 import { getGenreLabel } from '../utils/genre';
 
 interface MovieCardProps {
-    movie: Movie;
+    movie: IMovie;
     onClick: (id: number) => void;
 }
 

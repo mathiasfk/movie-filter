@@ -1,10 +1,10 @@
 import React from 'react';
-import { Movie } from '../api/types';
+import { IMovie } from '../api/types';
 import MovieCard from './MovieCard';
 import './MovieList.css';
 
 interface MovieListProps {
-    movies: Movie[];
+    movies: IMovie[];
     onClickMovie: (id: number) => void;
 }
 
