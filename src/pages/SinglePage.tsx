@@ -31,7 +31,8 @@ const SinglePage: React.FC = () => {
     };
 
     const handleScroll = () => {
-        if (2 * window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight + 300 && hasMore && !loading) {
+        if (2 * window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight + 300 
+            && hasMore && !loading && !showDetail) {
             setPage(prev => prev + 1);
         }
     };
