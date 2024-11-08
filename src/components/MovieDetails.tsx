@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { IMovieDetails } from '../api/types';
 
 interface MovieDetailsProps {

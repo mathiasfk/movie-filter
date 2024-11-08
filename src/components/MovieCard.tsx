@@ -1,6 +1,8 @@
-import React from 'react';
-import { IMovie } from '../api/types';
 import './MovieCard.css';
+
+import React from 'react';
+
+import { IMovie } from '../api/types';
 import { getGenreLabel } from '../utils/genre';
 
 interface MovieCardProps {

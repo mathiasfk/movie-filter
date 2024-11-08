@@ -1,4 +1,4 @@
-import { IMovie, DiscoverMovieParams, IMovieDetails } from "./types";
+import { DiscoverMovieParams, IMovie, IMovieDetails } from "./types";
 
 const API_BASE_URL = "https://api.themoviedb.org/3";
 const API_DISCOVER = `${API_BASE_URL}/discover/movie`;

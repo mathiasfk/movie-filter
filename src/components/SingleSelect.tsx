@@ -1,5 +1,6 @@
 import React from 'react';
 import Select, { SingleValue } from 'react-select';
+
 import { isMobile } from '../utils/user';
 
 interface SelectProps {

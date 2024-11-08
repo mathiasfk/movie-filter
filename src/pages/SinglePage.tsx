@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { discoverMovies, movieDetails } from '../api/movies';
-import { DiscoverMovieParams, IMovie, IMovieDetails } from '../api/types';
-import MovieList from '../components/MovieList';
-import MovieDetails from '../components/MovieDetails';
 import { useNavigate } from 'react-router-dom';
+
+import { discoverMovies, movieDetails } from '../api/movies';
+import { DiscoverMovieParams,IMovie, IMovieDetails } from '../api/types';
+import MovieDetails from '../components/MovieDetails';
+import MovieList from '../components/MovieList';
 
 const SinglePage: React.FC = () => {
     const [movies, setMovies] = useState<IMovie[]>([]);
@@ -15,7 +16,7 @@ const SinglePage: React.FC = () => {
     const [filters, setFilters] = useState<DiscoverMovieParams | null>(null);
     const [showDetail, setShowDetail] = useState(false);
 
-    const loadMovies = async (currentFilters: DiscoverMovieParams, currentPage: number = 1) => {
+    const loadMovies = async (currentFilters: DiscoverMovieParams, currentPage = 1) => {
         if (loading) return;
         setLoading(true);
         try {

@@ -1,8 +1,10 @@
-import React from 'react';
-import { DiscoverMovieParams, IMovie } from '../api/types';
-import MovieCard from './MovieCard';
 import './MovieList.css';
+
+import React from 'react';
+
 import Filter from './Filter';
+import MovieCard from './MovieCard';
+import { DiscoverMovieParams, IMovie } from '../api/types';
 
 interface MovieListProps {
     movies: IMovie[];

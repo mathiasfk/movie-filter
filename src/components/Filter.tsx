@@ -1,12 +1,14 @@
-import React from 'react';
-import MultiSelect from './MultiSelect';
-import SingleSelect from './SingleSelect';
-import NumberInput from './NumberInput';
-import { DiscoverMovieParams } from '../api/types';
 import './Filter.css';
+
+import React from 'react';
+
+import MultiSelect from './MultiSelect';
+import { DiscoverMovieParams } from '../api/types';
 import { generateYears } from '../utils/dates';
 import { genreDictionary, getGenreSelectedOptions } from '../utils/genre';
 import { getSortBySelectedOption, sortByDictionary } from '../utils/sortBy';
+import NumberInput from './NumberInput';
+import SingleSelect from './SingleSelect';
 
 interface FilterProps {
     filters: DiscoverMovieParams;
