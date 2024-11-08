@@ -2,18 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { discoverMovies, movieDetails } from '../api/movies';
 import { DiscoverMovieParams, IMovie, IMovieDetails } from '../api/types';
 import MovieList from '../components/MovieList';
-import Filter from '../components/Filter';
 import MovieDetails from '../components/MovieDetails';
 import { useNavigate } from 'react-router-dom';
 
-const MovieListPage: React.FC = () => {
+const SinglePage: React.FC = () => {
     const [movies, setMovies] = useState<IMovie[]>([]);
     const [selectedMovie, setSelectedMovie] = useState<IMovieDetails | null>(null);
     const [hasMore, setHasMore] = useState(true);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [page, setPage] = useState(1);
-    const [filters, setFilters] = useState<DiscoverMovieParams | null>(null);  // Inicialmente null
+    const [filters, setFilters] = useState<DiscoverMovieParams | null>(null);
     const [showDetail, setShowDetail] = useState(false);
 
     const loadMovies = async (currentFilters: DiscoverMovieParams, currentPage: number = 1) => {
@@ -112,18 +111,15 @@ const MovieListPage: React.FC = () => {
 
     return (
         <div style={{ padding: '20px' }}>
-            {!showDetail && <h1>Lista de Filmes</h1>}
-            {!showDetail && <Filter filters={filters || {}} onFilterChange={handleFilterChange} />}
-            {loading && <p>Carregando...</p>}
-            {error && <p>{error}</p>}
-
             {!showDetail ? (
-                <MovieList movies={movies} onClickMovie={handleMovieSelect} />
+                <MovieList movies={movies} filters={filters || {}} onClickMovie={handleMovieSelect} onFilterChange={handleFilterChange} />
             ) : (
                 selectedMovie && <MovieDetails movie={selectedMovie} />
             )}
+            {loading && <p>Carregando...</p>}
+            {error && <p>{error}</p>}
         </div>
     );
 };
 
-export default MovieListPage;
+export default SinglePage;

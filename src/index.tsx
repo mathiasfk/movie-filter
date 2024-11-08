@@ -4,14 +4,14 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, redirect, RouterProvider } from 'react-router-dom';
-import MovieListPage from './pages/MovieListPage';
+import SinglePage from './pages/SinglePage';
 
 const router = createBrowserRouter([{
   path: "/",
   element: <App />,
   children: [{
     path: "/",
-    element: <MovieListPage />
+    element: <SinglePage />
   },{
       path: "/movie/:id",
       loader: async () => redirect('/'),
